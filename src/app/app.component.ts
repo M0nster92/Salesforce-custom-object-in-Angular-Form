@@ -1,4 +1,4 @@
-import { Component, VERSION } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -6,13 +6,17 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   formData = []; //these data will be use to construct a form
   infoForm: any;
   initFormUI = false;
   optionUI = false;
   newForm: any;
   generatedForm = false;
+
+  ngOnInit(){
+    this.formInit();
+  }
 
   formInit() {
     this.initFormUI = true;

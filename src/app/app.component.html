@@ -1,4 +1,76 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<div class="container">
+  <h3>Custom Fields:</h3>
+  <form [formGroup]="infoForm" *ngIf="initFormUI">
+    <div class="form-group">
+      <label>Label: </label>
+      <input class="form-control" type="text" formControlName="label" />
+      <label>Type:</label>
+      <select class="form-select form-control" formControlName="type">
+        <option value="textBox">Text Box</option>
+        <option value="number">Number</option>
+        <option value="select">Select</option>
+      </select>
+      <div *ngIf="Type.value == 'select'">
+        <label>Options:</label>
+        <input
+          class="form-control"
+          type="text"
+          (keyup.enter)="addOptions(option)"
+          #option
+        />
+      </div>
+    </div>
+  </form>
+  <ul class="list-group" *ngIf="optionUI">
+    <li class="list-group-item" *ngFor="let topic of Options.controls">
+      {{ topic.value }}
+      <button class="btn btn-danger" (click)="removeOption(topic)">
+        Remove
+      </button>
+    </li>
+  </ul>
+  <button class="btn btn-primary" (click)="insertFormData()">Add Field</button>
+</div>
 
-<p>
-  Start editing to see some magic happen :)
-</p>
+<div class="container" *ngIf="generatedForm">
+  <h2>Custom Form:</h2>
+  <form [formGroup]="newForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <div *ngFor="let form_elem of formData">
+        <div [ngSwitch]="form_elem.type">
+          <div *ngSwitchCase="'textBox'">
+            <label>{{ form_elem.label }}:</label>
+            <input
+              type="text"
+              formControlName="{{ form_elem.label }}"
+              placeholder="{{ form_elem.label }}"
+              class="form-control"
+            />
+          </div>
+          <div *ngSwitchCase="'number'">
+            <label>{{ form_elem.label }}:</label>
+            <input
+              type="number"
+              formControlName="{{ form_elem.label }}"
+              placeholder="{{ form_elem.label }}"
+              class="form-control"
+            />
+          </div>
+          <div *ngSwitchCase="'select'">
+            <label>{{ form_elem.label }}:</label>
+            <select class="form-select form-control" formControlName="{{ form_elem.label }}">
+              <option></option>
+              <option *ngFor="let opt of form_elem.options">
+                {{ opt }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <input type="submit" value="save" class="btn btn-primary" />
+    </div>
+  </form>
+</div>
